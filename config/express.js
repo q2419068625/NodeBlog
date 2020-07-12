@@ -3,10 +3,15 @@ const glob = require('glob');
 
 const favicon = require('serve-favicon');
 const logger = require('morgan');
+const moment = require('moment');
+const truncate = require('truncate');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const compress = require('compression');
+const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+
+const Category = mongoose.model('Category');
 
 module.exports = (app, config) => {
   const env = process.env.NODE_ENV || 'development';
@@ -16,6 +21,19 @@ module.exports = (app, config) => {
   app.set('views', config.root + '/app/views');
   app.set('view engine', 'ejs');
 
+  app.use(function(req,res,next){
+    app.locals.pageName = req.path;
+    app.locals.moment = moment;
+    app.locals.truncate = truncate;
+    console.log(app.locals.pageName);
+    Category.find((err,categories)=>{
+      if(err){
+        return next(err);
+      }
+      app.locals.categories = categories;
+      next();
+    })
+  })
   // app.use(favicon(config.root + '/public/img/favicon.ico'));
   app.use(logger('dev'));
   app.use(bodyParser.json());
@@ -27,7 +45,7 @@ module.exports = (app, config) => {
   app.use(express.static(config.root + '/public'));
   app.use(methodOverride());
 
-  var controllers = glob.sync(config.root + '/app/controllers/*.js');
+  var controllers = glob.sync(config.root + '/app/controllers/**/*.js');
   controllers.forEach((controller) => {
     require(controller)(app);
   });

@@ -33,9 +33,9 @@
     </div>
 
     <div class="container">
-      <div class="blog-header">
-        <h1 class="blog-title">Node全栈博客</h1>
-      </div>
+        <div class="blog-header">
+            <h1 class="blog-post-title"><%=category.name%>分类下的所有文章</h1>
+          </div>
       <div class="row">
         <div class="col-sm-8 blog-main">
           <% for(var i=0;i<posts.length;i++){%>
@@ -80,7 +80,7 @@
             <%if(i === pageNum){%>
               <li class="active"><a href="/posts/page=<%=i%>"><%=i%></a></li>
             <%} else{%>
-              <li><a href="/posts?page=<%=i%>"><%=i%></a></li>
+                <li><a href="/posts/category/<%=category.name%>?page=<%=i%>"><%=i%></a></li>
             <%}%>
           <%}%>
         </ul>
@@ -94,8 +94,6 @@
         <a href="#">Back to top</a>
       </p>
     </footer>
-
-
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script>window.jQuery || document.write('<script src="/js/jquery-3.3.1.min.js"><\/script>')</script>
     <script src="/js/bootstrap.min.js"></script>
