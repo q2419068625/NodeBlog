@@ -8,11 +8,5 @@ module.exports = (app) => {
 };
 
 router.get('/', (req, res, next) => {
-  Post.find((err, posts) => {
-    if (err) return next(err);
-    res.render('admin/index', {
-      title: 'Node Blog Admin',
-      posts: posts
-    });
-  });
+    res.redirect('/admin/posts')
 });

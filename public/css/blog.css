@@ -152,7 +152,17 @@ h6, .h6 {
   font-size: 12px;
   color: #999;
 }
-
+.blog-zuozhe{
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  margin: 20px 0;
+  padding: 10px;
+  text-align: center;
+}
+.blog-neirong{
+  text-indent: 2em;
+  text-align: justify;
+}
 
 /*
  * Footer

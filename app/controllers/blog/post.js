@@ -60,11 +60,82 @@ router.get('/category/:name', (req, res, next) => {
     })
 });
 
-router.get('/view', (req, res, next) => {
+router.get('/view/:id', (req, res, next) => {
+    if(!req.params.id){
+        return next(new Error('no post id provided'))
+    }
+    var conditions = {};
+    try {
+        conditions._id = mongoose.Types.ObjectId(req.params.id)
+    } catch (error) {
+        conditions.slug = req.params.id
+    }
+    Post.findOne(conditions)
+    .populate('category')
+    .populate('author')
+    .exec((err,posts)=>{
+        if(err){
+            return next(err)
+        }
+        res.render('blog/view',{
+            posts:posts,
+        })
+    })
 });
 
-router.get('/comment', (req, res, next) => {
+
+router.get('/favourite/:id', (req, res, next) => {
+    if(!req.params.id){
+        return next(new Error('no post id provided'))
+    }
+    var conditions = {};
+    try {
+        conditions._id = mongoose.Types.ObjectId(req.params.id)
+    } catch (error) {
+        conditions.slug = req.params.id
+    }
+    Post.findOne(conditions)
+    .populate('category')
+    .populate('author')
+    .exec((err,posts)=>{
+        if(err){
+            return next(err)
+        }
+        posts.meta.favorites = posts.meta.favorites ? posts.meta.favorites + 1 : 1;
+        posts.markModified('meta');
+        posts.save((err)=>{
+            res.redirect('/posts/view/' + posts.slug)
+        })
+       
+    })
 });
 
-router.get('/favourite', (req, res, next) => {
+router.post('/comment/:id', (req, res, next) => {
+
+    if(!req.body.email){
+        return next(new Error('no email'))
+    }
+    if(!req.body.content){
+        return next(new Error('no content'))
+    }
+    var conditions = {};
+    try {
+        conditions._id = mongoose.Types.ObjectId(req.params.id)
+    } catch (error) {
+        conditions.slug = req.params.id
+    }
+    Post.findOne(conditions).exec((err,posts)=>{
+        if(err){
+            return next(err)
+        }
+        var comment = {
+            email:req.body.email,
+            content:req.body.content
+        }
+        posts.comments.unshift(comment)
+        posts.markModified('comments')
+        posts.save((err,posts)=>{
+            res.redirect('/posts/view/'+posts.slug)
+        })
+    })
 });
