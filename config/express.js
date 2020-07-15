@@ -11,6 +11,7 @@ const compress = require('compression');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 
+
 const Category = mongoose.model('Category');
 
 module.exports = (app, config) => {
@@ -40,6 +41,7 @@ module.exports = (app, config) => {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+
   app.use(cookieParser());
   app.use(compress());
   app.use(express.static(config.root + '/public'));

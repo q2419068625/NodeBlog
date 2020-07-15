@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>博客后台管理</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -53,27 +53,117 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="/admin/posts"><i class="fa fa-files-o fa-lg"></i>&nbsp;文章列表 <span class="sr-only">(current)</span></a></li>
-            <li><a href="/admin/posts/add"><i class="fa fa-file-text fa-lg"></i>&nbsp;添加文章</a></li>
-            <li><a href="/admin/categories"><i class="fa fa-list fa-lg"></i>&nbsp;分类列表</a></li>
-            <li><a href="/admin/categories/add"><i class="fa fa-plus fa-lg"></i>&nbsp;添加分类</a></li>
+            <li class="<%=pageName === '/admin/posts' ? 'active' :''%>"><a href="/admin/posts"><i class="fa fa-files-o fa-lg"></i>&nbsp;文章列表 <span class="sr-only">(current)</span></a></li>
+            <li class=""><a href="/admin/posts/add"><i class="fa fa-file-text fa-lg"></i>&nbsp;添加文章</a></li>
+            <li class=""><a href="/admin/categories"><i class="fa fa-list fa-lg"></i>&nbsp;分类列表</a></li>
+            <li class=""><a href="/admin/categories/add"><i class="fa fa-plus fa-lg"></i>&nbsp;添加分类</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="/admin/users/password"><i class="fa fa-lock fa-lg"></i>&nbsp;修改密码</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Dashboard</h1>
+          <h1 class="page-header">文章列表</h1>
           <table class="table table-bordered">
             <thead>
               <tr>
-                  <th width="30%">标题</th>
-                  <th>分类</th>
-                  <th>作者</th>
-                  <th>时间</th>
+                  <th width="30%">
+                    <%if(sortby === 'title'){%>
+                      <%if(sortdir === 'desc'){%>
+                        <a href="/admin/posts?page=<%=pageNum%>&sortby=title&sortdir=asc">
+                          <i class="fa fa-arrow-down"></i>&nbsp;
+                          标题
+                        </a>
+                        <%}else{%>
+                          <a href="/admin/posts?page=<%=pageNum%>&sortby=title&sortdir=desc">
+                            <i class="fa fa-arrow-up"></i>&nbsp;
+                            标题
+                          </a>
+                          <%}%>
+                    <%}else{%>
+                      <a href="/admin/posts?page=<%=pageNum%>&sortby=title&sortdir=asc">
+                        标题
+                      </a>
+                      <%}%>
+                  </th>
+                  <th>
+                    <%if(sortby === 'category'){%>
+                      <%if(sortdir === 'desc'){%>
+                        <a href="/admin/posts?page=<%=pageNum%>&sortby=category&sortdir=asc">
+                          <i class="fa fa-arrow-down"></i>&nbsp;
+                          分类
+                        </a>
+                        <%}else{%>
+                          <a href="/admin/posts?page=<%=pageNum%>&sortby=category&sortdir=desc">
+                            <i class="fa fa-arrow-up"></i>&nbsp;
+                            分类
+                          </a>
+                          <%}%>
+                    <%}else{%>
+                      <a href="/admin/posts?page=<%=pageNum%>&sortby=category&sortdir=asc">
+                        分类
+                      </a>
+                      <%}%>
+                  </th>
+                  <th>
+                    <%if(sortby === 'author'){%>
+                      <%if(sortdir === 'desc'){%>
+                        <a href="/admin/posts?page=<%=pageNum%>&sortby=author&sortdir=asc">
+                          <i class="fa fa-arrow-down"></i>&nbsp;
+                          作者
+                        </a>
+                        <%}else{%>
+                          <a href="/admin/posts?page=<%=pageNum%>&sortby=author&sortdir=desc">
+                            <i class="fa fa-arrow-up"></i>&nbsp;
+                            作者
+                          </a>
+                          <%}%>
+                    <%}else{%>
+                      <a href="/admin/posts?page=<%=pageNum%>&sortby=author&sortdir=asc">
+                        作者
+                      </a>
+                      <%}%>
+                  </th>
+                  <th>
+                    <%if(sortby === 'created'){%>
+                      <%if(sortdir === 'desc'){%>
+                        <a href="/admin/posts?page=<%=pageNum%>&sortby=created&sortdir=asc">
+                          <i class="fa fa-arrow-down"></i>&nbsp;
+                          时间
+                        </a>
+                        <%}else{%>
+                          <a href="/admin/posts?page=<%=pageNum%>&sortby=created&sortdir=desc">
+                            <i class="fa fa-arrow-up"></i>&nbsp;
+                            时间
+                          </a>
+                          <%}%>
+                    <%}else{%>
+                      <a href="/admin/posts?page=<%=pageNum%>&sortby=created&sortdir=asc">
+                        时间
+                      </a>
+                      <%}%>
+                  </th>
                   <th>被赞</th>
                   <th>评论</th>
-                  <th>状态</th>
+                  <th>
+                    <%if(sortby === 'published'){%>
+                      <%if(sortdir === 'desc'){%>
+                        <a href="/admin/posts?page=<%=pageNum%>&sortby=published&sortdir=asc">
+                          <i class="fa fa-arrow-down"></i>&nbsp;
+                          状态
+                        </a>
+                        <%}else{%>
+                          <a href="/admin/posts?page=<%=pageNum%>&sortby=published&sortdir=desc">
+                            <i class="fa fa-arrow-up"></i>&nbsp;
+                            状态
+                          </a>
+                          <%}%>
+                    <%}else{%>
+                      <a href="/admin/posts?page=<%=pageNum%>&sortby=published&sortdir=asc">
+                        状态
+                      </a>
+                      <%}%>
+                  </th>
                   <th>管理</th>
               </tr>
             </thead>
@@ -103,9 +193,9 @@
             <ul class="pagination">
               <%for(var i = 1;i<=pageCount;i++){%>
                 <%if(i === pageNum){%>
-                  <li class="active"><a href="/admin/posts/page=<%=i%>"><%=i%></a></li>
+                  <li class="active"><a href="/admin/posts?page=<%=i%>&sortby<%=sortdir%>&sortdir=<%=sortdir%>"><%=i%></a></li>
                 <%} else{%>
-                  <li><a href="/admin/posts?page=<%=i%>"><%=i%></a></li>
+                  <li><a href="/admin/posts?page=<%=i%>&sortby<%=sortdir%>&sortdir=<%=sortdir%>"><%=i%></a></li>
                 <%}%>
               <%}%>
             </ul>

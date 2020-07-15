@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>博客后台管理</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -53,9 +53,9 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="/admin/posts/list"><i class="fa fa-files-o fa-lg"></i>&nbsp;文章列表 <span class="sr-only">(current)</span></a></li>
-            <li><a href="/admin/posts/add"><i class="fa fa-file-text fa-lg"></i>&nbsp;添加文章</a></li>
-            <li><a href="/admin/categories/list"><i class="fa fa-list fa-lg"></i>&nbsp;分类列表</a></li>
+            <li class=""><a href="/admin/posts"><i class="fa fa-files-o fa-lg"></i>&nbsp;文章列表 <span class="sr-only"></span></a></li>
+            <li class="<%=pageName === '/admin/posts/add' ? 'active' :''%>"><a href="/admin/posts/add"><i class="fa fa-file-text fa-lg"></i>&nbsp;添加文章</a></li>
+            <li><a href="/admin/categories"><i class="fa fa-list fa-lg"></i>&nbsp;分类列表</a></li>
             <li><a href="/admin/categories/add"><i class="fa fa-plus fa-lg"></i>&nbsp;添加分类</a></li>
           </ul>
           <ul class="nav nav-sidebar">
@@ -63,7 +63,46 @@
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Dashboard</h1>
+          <h1 class="page-header">添加文章</h1>
+          <%if(typeof errors !=='undefined' && errors && errors.length){%>
+              <div class="errors">
+                <%for(var i =0;i<errors.length;i++){%>
+                    <p class="alert alert-danger"><%=errors[i].msg%></p>
+                  <%}%>
+              </div>
+          <%}%>
+          <form class="form-horizontal" action="/admin/posts/add" method="POST">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputEmail3" name="title" placeholder="请输入标题" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword3" class="col-sm-2 control-label">分类</label>
+              <div class="col-sm-10">
+                <select class="form-control" name="category" required>
+                  <% categories.forEach(function(category){%>
+                    <option value="<%=category._id%>"><%=category.name%></option>
+                    <%})%>
+                  <
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">内容</label>
+              <div class="col-sm-10">
+               <textarea  id="js-post-content" name="content" required></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">发布</button>
+              </div>
+            </div>
+          </form>
+        </div>
+       
       </div>
     </div>
 
@@ -77,5 +116,7 @@
     <script src="/js/holder.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="/js/ckeditor/ckeditor.js"></script>
+    <script src="/js/admin/posts.js"></script>
   </body>
 </html>
