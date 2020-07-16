@@ -27,7 +27,7 @@ module.exports = (app, config) => {
     app.locals.moment = moment;
     app.locals.truncate = truncate;
     console.log(app.locals.pageName);
-    Category.find((err,categories)=>{
+    Category.find({}).sort('-created').exec((err,categories)=>{
       if(err){
         return next(err);
       }

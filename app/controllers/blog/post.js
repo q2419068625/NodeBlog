@@ -9,8 +9,14 @@ module.exports = (app) => {
 };
 
 router.get('/', (req, res, next) => {
-  Post.find()
-  .sort('created')
+    var conditions = {published:true}
+    if(req.query.keyword){
+        conditions.title = new RegExp(req.query.keyword.trim(),'i') 
+        conditions.content = new RegExp(req.query.keyword.trim(),'i') 
+    }
+
+  Post.find(conditions)
+  .sort('-created')
   .populate('author')
   .populate('category')
   .exec((err,posts)=>{
@@ -25,7 +31,7 @@ router.get('/', (req, res, next) => {
       res.render('blog/index', {
         posts: posts.slice((pageNum-1) * pageSize, pageNum * pageSize),
         pageNum:pageNum,
-        pageCount:pageCount,
+        pageCount:pageCount
       });
   });
 });
@@ -139,3 +145,4 @@ router.post('/comment/:id', (req, res, next) => {
         })
     })
 });
+

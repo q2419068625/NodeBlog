@@ -1,35 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>博客</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <title>博客</title>
 
-    <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="/css/blog.css" rel="stylesheet">
+  <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-    <script src="/js/ie-emulation-modes-warning.js"></script>
+  <link href="/css/blog.css" rel="stylesheet">
 
-  </head>
+  <script src="/js/ie-emulation-modes-warning.js"></script>
 
-  <body>
+</head>
 
-    <div class="blog-masthead">
-      <div class="container">
-        <nav class="blog-nav">
+<body>
+
+  <div class="blog-masthead">
+    <div class="container">
+      <nav class="blog-nav pull-left">
+        <%if(pageName === '/posts'){%>
           <a class="blog-nav-item active" href="/">首页</a>
-          <a class="blog-nav-item" href="/about">关于</a>
+        <%}else{%>
+          <a class="blog-nav-item" href="/">首页</a>
+        <%}%>
+
+
+        <%if(pageName === '/about'){%>
+          <a class="blog-nav-item active" href="/about">关于</a>
+        <%}else{%>
+         <a class="blog-nav-item" href="/about">关于</a>
+        <%}%>
+
+        <%if(pageName === '/contact'){%>
+          <a class="blog-nav-item active" href="/contact">联系</a>
+        <%}else{%>
           <a class="blog-nav-item" href="/contact">联系</a>
+        <%}%>
         </nav>
+        <form action="/posts/" method="GET" class="navbar-form pull-right">
+          <input type="text" class="form-control" name="keyword" placeholder="搜索...">
+        </form>
       </div>
+
     </div>
 
     <div class="container">
@@ -39,17 +59,19 @@
       <div class="row">
         <div class="col-sm-8 blog-main">
           <% for(var i=0;i<posts.length;i++){%>
-          <div class="blog-post">
-            <h3 class="blog-post-title"><a href="/posts/view/<%=posts[i].slug%>" target="_blank"><%=posts[i].title%></a></h3>
-            <p><%=truncate(posts[i].content,160)%></p>
-            <span class="post-meta">发布时间:&nbsp;<%=moment(posts[i].created).format('YYYY-MM-DD')%>&nbsp;</span>|
-            <span class="post-meta">作者:&nbsp;<%=posts[i].author.name%>&nbsp;</span>
-            |<span class="post-meta">&nbsp;分类:&nbsp;<a href="/posts/category/<%=posts[i].category.name%>" target="_blank"><%=posts[i].category.name%></a>&nbsp;</span>
-            |<span class="post-meta">&nbsp;评论:&nbsp;<%=posts[i].comments.length%>&nbsp;</span>|
-            <span class="post-meta">&nbsp;点赞:&nbsp;<%=posts[i].meta.favourates || 0%>&nbsp;</span>
-            <p class="blog-post-meta"><a href="/posts/view/<%=posts[i].slug%>" target="_blank">查看全文</a></p>
-          </div>
-          <%}%>
+        <div class="blog-post">
+          <h3 class="blog-post-title"><a href="/posts/view/<%=posts[i].slug%>" target="_blank"><%=posts[i].title%></a>
+          </h3>
+          <p><%-truncate(posts[i].content,160)%></p>
+          <span class="post-meta">发布时间:&nbsp;<%=moment(posts[i].created).format('YYYY-MM-DD')%>&nbsp;</span>|
+          <span class="post-meta">作者:&nbsp;<%=posts[i].author.name%>&nbsp;</span>
+          |<span class="post-meta">&nbsp;分类:&nbsp;<a href="/posts/category/<%=posts[i].category.name%>"
+              target="_blank"><%=posts[i].category.name%></a>&nbsp;</span>
+          |<span class="post-meta">&nbsp;评论:&nbsp;<%=posts[i].comments.length%>&nbsp;</span>|
+          <span class="post-meta">&nbsp;点赞:&nbsp;<%=posts[i].meta.favourates || 0%>&nbsp;</span>
+          <p class="blog-post-meta"><a href="/posts/view/<%=posts[i].slug%>" target="_blank">查看全文</a></p>
+        </div>
+        <%}%>
 
         </div><!-- /.blog-main -->
 
@@ -58,34 +80,34 @@
             <h4>文章分类</h4>
             <ol class="list-unstyled">
               <% categories.forEach(function(category){%>
-              <li><a href="/posts/category/<%=category.name%>" target="_blank"><%=category.name%></a></li>
-              <%})%>
-            </ol>
-          </div>
-          <div class="sidebar-module">
-            <h4>友情链接</h4>
-            <ol class="list-unstyled">
-              <li><a href="#">GitHub</a></li>
-              <li><a href="#">Twitter</a></li>
-              <li><a href="#">Facebook</a></li>
-            </ol>
-          </div>
-        </div><!-- /.blog-sidebar -->
+        <li><a href="/posts/category/<%=category.name%>" target="_blank"><%=category.name%></a></li>
+        <%})%>
+        </ol>
+    </div>
+    <div class="sidebar-module">
+      <h4>友情链接</h4>
+      <ol class="list-unstyled">
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ol>
+    </div>
+  </div><!-- /.blog-sidebar -->
 
-      </div><!-- /.row -->
-      <%if(pageCount>1){%>
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <%for(var i = 1;i<=pageCount;i++){%>
-            <%if(i === pageNum){%>
-              <li class="active"><a href="/posts/page=<%=i%>"><%=i%></a></li>
-            <%} else{%>
-              <li><a href="/posts?page=<%=i%>"><%=i%></a></li>
-            <%}%>
-          <%}%>
-        </ul>
-      </nav>
+  </div><!-- /.row -->
+  <%if(pageCount>1){%>
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <%for(var i = 1;i<=pageCount;i++){%>
+      <%if(i === pageNum){%>
+      <li class="active"><a href="/posts/page=<%=i%>"><%=i%></a></li>
+      <%} else{%>
+      <li><a href="/posts?page=<%=i%>"><%=i%></a></li>
       <%}%>
+          <%}%>
+    </ul>
+  </nav>
+  <%}%>
     </div><!-- /.container -->
 
     <footer class="blog-footer">

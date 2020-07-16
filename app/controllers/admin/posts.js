@@ -23,7 +23,15 @@ router.get('/', (req, res, next) => {
   var sortObj = {}
   sortObj[sortby] = sortdir
 
-  Post.find()
+  var conditions = {}
+  if(req.query.keyword){
+    conditions.title = new RegExp(req.query.keyword.trim(),'i') 
+    conditions.content = new RegExp(req.query.keyword.trim(),'i') 
+  }
+
+
+
+  Post.find(conditions)
   .sort(sortObj)
   .populate('author')
   .populate('category')
@@ -41,19 +49,74 @@ router.get('/', (req, res, next) => {
         pageNum:pageNum,
         pageCount:pageCount,
         sortdir:sortdir,
-        sortby:sortby
+        sortby:sortby,
+        filter:{
+          keyword:req.query.keyword || ''
+        }
       });
   });
 });
 
 router.get('/edit/:id', (req, res, next) => {
+  if(!req.params.id){
+    return next(new Error('no post id provided'))
+}
+var conditions = {};
+try {
+    conditions._id = mongoose.Types.ObjectId(req.params.id)
+} catch (error) {
+    conditions.slug = req.params.id
+}
+Post.findOne({_id:req.params.id})
+.populate('category')
+.populate('author')
+.exec((err,posts)=>{
+    if(err){
+        return next(err)
+    }
+    res.render('admin/post/add',{
+        posts:posts,
+      action:'/admin/posts/edit/'+posts.id
+
+    })
+})
 });
 
 router.post('/edit/:id', (req, res, next) => {
+  if(!req.params.id){
+    return next(new Error('no post id provided'))
+  }
+  Post.findOne({_id:req.params.id}).exec((err,post)=>{
+    if(err){
+      return next(err)
+    }
+    var title = req.body.title.trim()
+    var category = req.body.category.trim()
+    var content = req.body.content
+
+    post.title = title
+    post.category = category
+    post.content = content
+
+    post.save((err,post)=>{
+      if(err){
+        console.log(err);
+        return next(err)
+      }else{
+        res.redirect('/admin/posts')
+      }
+    })
+
+  })
 });
 
 router.get('/add', (req, res, next) => {
-  res.render('admin/post/add');
+  res.render('admin/post/add',{
+    action:'/admin/posts/add',
+    posts:{
+      category:{_id:''}
+    }
+  });
 });
 
 router.post('/add',[

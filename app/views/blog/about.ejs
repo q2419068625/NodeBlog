@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>博客</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <link href="/css/blog.css" rel="stylesheet">
+
+    <script src="/js/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav pull-left">
+          <%if(pageName === '/posts'){%>
+            <a class="blog-nav-item active" href="/">首页</a>
+          <%}else{%>
+            <a class="blog-nav-item" href="/">首页</a>
+          <%}%>
+  
+  
+          <%if(pageName === '/about'){%>
+            <a class="blog-nav-item active" href="/about">关于</a>
+          <%}else{%>
+           <a class="blog-nav-item" href="/about">关于</a>
+          <%}%>
+  
+          <%if(pageName === '/contact'){%>
+            <a class="blog-nav-item active" href="/contact">联系</a>
+          <%}else{%>
+            <a class="blog-nav-item" href="/contact">联系</a>
+          <%}%>
+           
+        </nav>
+        <form action="/posts/" method="GET" class="navbar-form pull-right">
+          <input type="text" class="form-control" name="keyword" placeholder="搜索...">
+        </form>
+      </div>
+
+    </div>
+
+    <div class="container">
+      <div class="blog-header">
+        <h1 class="blog-title">关于我们</h1>
+      </div>
+    <footer class="blog-footer">
+      <p>NodeBlog by 大补bu</p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </footer>
+
+
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/jquery-3.3.1.min.js"><\/script>')</script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
