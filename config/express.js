@@ -10,11 +10,14 @@ const bodyParser = require('body-parser');
 const compress = require('compression');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-
+const session = require('express-session')
+const passport = require('passport')
+const MongoStore = require('connect-mongo')(session);
 
 const Category = mongoose.model('Category');
+const User = mongoose.model('User');
 
-module.exports = (app, config) => {
+module.exports = (app, config,connection) => {
   const env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
@@ -35,12 +38,41 @@ module.exports = (app, config) => {
       next();
     })
   })
+
   // app.use(favicon(config.root + '/public/img/favicon.ico'));
   app.use(logger('dev'));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+  app.use(session({ 
+    secret: 'nodeblog', 
+    resave: true, 
+    saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: connection })
+}));
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.use(function(req,res,next){
+    req.user = null
+    if(req.session.passport && req.session.passport.user){
+      User.findById(req.session.passport.user,function(err,user){
+        if(err){
+          return next(err)
+        }
+        user.password = null,
+        req.user = user
+        next()
+      })
+    }else{
+      next()
+    }
+  })
+  app.use(function(req,res,next){
+    app.locals.user = req.user;
+    next()
+  })
 
   app.use(cookieParser());
   app.use(compress());

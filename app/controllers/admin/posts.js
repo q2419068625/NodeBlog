@@ -5,12 +5,13 @@ const Post = mongoose.model('Post');
 const Category = mongoose.model('Category');
 const User = mongoose.model('User');
 const slug = require('slug');
+const auth = require('./user');
 const {check,validationResult } = require('express-validator')
 module.exports = (app) => {
   app.use('/admin/posts', router);
 };
 
-router.get('/', (req, res, next) => {
+router.get('/',auth.requireLogin,  (req, res, next) => {
   var sortby = req.query.sortby ? req.query.sortby :'created'
   var sortdir = req.query.sortdir ? req.query.sortdir :'desc'
 
@@ -57,7 +58,7 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.get('/edit/:id', (req, res, next) => {
+router.get('/edit/:id',auth.requireLogin,  (req, res, next) => {
   if(!req.params.id){
     return next(new Error('no post id provided'))
 }
@@ -82,7 +83,7 @@ Post.findOne({_id:req.params.id})
 })
 });
 
-router.post('/edit/:id', (req, res, next) => {
+router.post('/edit/:id',auth.requireLogin,  (req, res, next) => {
   if(!req.params.id){
     return next(new Error('no post id provided'))
   }
@@ -110,7 +111,7 @@ router.post('/edit/:id', (req, res, next) => {
   })
 });
 
-router.get('/add', (req, res, next) => {
+router.get('/add',auth.requireLogin,  (req, res, next) => {
   res.render('admin/post/add',{
     action:'/admin/posts/add',
     posts:{
@@ -119,7 +120,7 @@ router.get('/add', (req, res, next) => {
   });
 });
 
-router.post('/add',[
+router.post('/add',auth.requireLogin, [
       check('title')
       .notEmpty()
       .withMessage('文章标题不能为空'),
@@ -175,7 +176,7 @@ router.post('/add',[
   })
 });
 
-router.get('/delete/:id', (req, res, next) => {
+router.get('/delete/:id',auth.requireLogin,  (req, res, next) => {
     if(!req.params.id){
         return next(new Error('no post id provided'))
     }

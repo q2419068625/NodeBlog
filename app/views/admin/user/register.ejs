@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>博客</title>
+
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+  <link href="/css/user.css" rel="stylesheet">
+
+  <script src="/js/ie-emulation-modes-warning.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <form class="form-signin" method="POST" action="/admin/users/register">
+          <h2 class="form-signin-heading">
+              注册
+            <a class="small pull-right" href="/admin/users/login">登录</a>
+          </h2>
+          
+          <label for="inputEmail" class="sr-only">邮箱</label>
+          <input type="email" id="inputEmail" class="form-control" name="email" placeholder="邮箱" required autofocus>
+          
+          <label for="inputPassword" class="sr-only">密码</label>
+          <input type="password" id="inputPassword" name="password" class="form-control" placeholder="密码" required>
+          
+          <label for="confirmPassword" class="sr-only">确认密码</label>
+          <input type="password" id="confirmPassword" name="confirmPassword"  class="form-control" placeholder="确认密码" required>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+        </form>
+        <%if(typeof errors !=='undefined' && errors && errors.length){%>
+          <div class="errors">
+            <%for(var i =0;i<errors.length;i++){%>
+                <p class="alert alert-danger"><%=errors[i].msg%></p>
+              <%}%>
+          </div>
+      <%}%>
+      </div> <!-- /container -->
+  
+
+
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/jquery-3.3.1.min.js"><\/script>')</script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

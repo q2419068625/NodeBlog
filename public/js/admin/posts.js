@@ -1,5 +1,3 @@
-import { query } from "express"
-
 $(document).ready(function(){
     var ndkeyword = $("#js-keyword")
     $("#js-filter-submit").on('click',function(){

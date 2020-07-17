@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const md5 = require('md5')
 
 const UserSchema = new Schema({
   name: {type:String,required:true},
@@ -10,6 +11,13 @@ const UserSchema = new Schema({
   created:{type:Date}
 });
 
+
+UserSchema.methods.verifyPassword = function(password){
+  var isMatch = md5(password) === this.password
+  console.log('password.verifyPassword'+ password, this.password,isMatch);
+  
+  return isMatch
+}
 
 mongoose.model('User', UserSchema);
 

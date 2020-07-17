@@ -5,16 +5,17 @@ const Post = mongoose.model('Post');
 const Category = mongoose.model('Category');
 const {check,validationResult } = require('express-validator')
 const slug = require('slug');
+const auth = require('./user');
 module.exports = (app) => {
   app.use('/admin/categories', router);
 };
 
-router.get('/', (req, res, next) => {
+router.get('/',auth.requireLogin, (req, res, next) => {
     res.render('admin/category/index', {
       });
 });
 
-router.get('/add', (req, res, next) => {
+router.get('/add',auth.requireLogin, (req, res, next) => {
     res.render('admin/category/add', {
       category:{
           _id:'',
@@ -24,7 +25,7 @@ router.get('/add', (req, res, next) => {
     });
 });
 
-router.post('/add', [
+router.post('/add',auth.requireLogin, [
   check('name')
   .notEmpty()
   .withMessage('分类标题不能为空'),
@@ -55,7 +56,7 @@ router.post('/add', [
 
 });
 
-router.get('/edit/:id', (req, res, next) => {
+router.get('/edit/:id',auth.requireLogin, (req, res, next) => {
   if(!req.params.id){
     return next(new Error('no post id provided'))
 }
@@ -74,7 +75,7 @@ Category.findOne({_id:req.params.id})
 
 });
 
-router.post('/edit/:id', (req, res, next) => {
+router.post('/edit/:id', auth.requireLogin,(req, res, next) => {
   if(!req.params.id){
     return next(new Error('no post id provided'))
   }
@@ -100,7 +101,7 @@ router.post('/edit/:id', (req, res, next) => {
 });
 
 
-router.get('/delete/:id', (req, res, next) => {
+router.get('/delete/:id',auth.requireLogin, (req, res, next) => {
 
   if(!req.params.id){
     return next(new Error('no post id provided'))
